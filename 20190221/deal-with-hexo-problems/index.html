@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Hexo + Github Pages 踩坑记录 | Jiang</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hexo + Github Pages 踩坑记录</h1><a id="logo" href="/.">Jiang</a><p class="description">中文生活博客</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Hexo + Github Pages 踩坑记录</h1><div class="post-meta">Feb 21, 2019<span> | </span><span class="category"><a href="/categories/折腾/">折腾</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 811</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 3</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" href="/20190221/deal-with-hexo-problems/#vcomment"><span class="valine-comment-count" data-xid="/20190221/deal-with-hexo-problems/"></span><span> 条评论</span></a><div class="post-content"><p>今天利用hexo + Github Pages 建立了中文博客，到能访问为止10分钟搞定，但是后面的换域名，换主题调试花了一个下午。下面把踩过的坑记录下来。</p>
+<h2 id="给托管在Github-Pages上的hexo博客设定子域名"><a href="#给托管在Github-Pages上的hexo博客设定子域名" class="headerlink" title="给托管在Github Pages上的hexo博客设定子域名"></a>给托管在Github Pages上的hexo博客设定子域名</h2><p>参考链接：<a href="https://zhuanlan.zhihu.com/p/26668828" target="_blank" rel="noopener">Github Page 自定义子域名</a>  </p>
+<p>博客托管以后的的地址是 <code>dayuanjiang.github.io</code>，然而我有一个 jiang.jp 的域名，上面有我的英文博客 <code>www.jiang.jp</code>。我自然是想把两个博客的地址联系起来，具体说就是把中文博客的地址从 Github 的地址改成 <code>b.jiang.jp</code>。  </p>
+<p>要改域名需要3个步骤：</p>
+<ol>
+<li>在域名商的 DNS 设定里增加一条 CNAME 的记录映射到 Github  repositor 的地址上。</li>
+<li>在 Github 上把 Custom domian 设定为想用的子域名。</li>
+<li>在 Hexo 的文件夹里增加一个 CNAME 的文件。  </li>
+</ol>
+<p>下面我具体说一下。</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>目标是把下面左边的地址换成右边的地址。<br><code>xxx</code> 是你 Github 的用户名，我的情况就是 <code>DayuanJiang</code> 。<br><code>yyy</code> 就是你想换子域名的主域名，我的情况就是 <code>jiang</code> 。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxx.github.io --&gt; b.yyy.com</span><br></pre></td></tr></table></figure></p>
+<h3 id="DNS-设定"><a href="#DNS-设定" class="headerlink" title="DNS 设定"></a>DNS 设定</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Type: CNAME                         </span><br><span class="line">Host: b <span class="comment"># 子域名</span></span><br><span class="line">Points to: dayuanjiang.github.io <span class="comment"># 你 github pages 现在的地址</span></span><br><span class="line">TTL: <span class="comment"># 随意</span></span><br></pre></td></tr></table></figure>
+<p>我用的是 Godaddy，就是这么设置的。<br><img src="https://res.cloudinary.com/jiang/image/upload/v1550752781/blog/kb5q7uu7whjtui2cinrc.jpg" alt></p>
+<h3 id="在-Github-上把-Custom-domian-设定为想用的子域名"><a href="#在-Github-上把-Custom-domian-设定为想用的子域名" class="headerlink" title="在 Github 上把 Custom domian 设定为想用的子域名"></a>在 Github 上把 Custom domian 设定为想用的子域名</h3><p>这个简单。进入你 Github Pages 的仓库，右上角的 Setting 点进去，拉到下面，找到 Custom domain，然后填入自己想改的子域名。<br><img src="https://res.cloudinary.com/jiang/image/upload/v1550752782/blog/t693em1bgtt2quumcja6.jpg" alt>  </p>
+<h3 id="最后在-Hexo-的文件夹上增加一个-CNAME-的文件"><a href="#最后在-Hexo-的文件夹上增加一个-CNAME-的文件" class="headerlink" title="最后在 Hexo 的文件夹上增加一个 CNAME 的文件"></a>最后在 Hexo 的文件夹上增加一个 CNAME 的文件</h3><p>找到你 博客 的文件夹，里面有个 Source 的文件夹，点进去，建立一个文件名为 CNAME 的文件（注意不要后缀）。然后用笔记本软件打开后输入你的子域名后保存。最后在命令行里<code>hexo d -g</code> 把修改推送到 Github 上。  </p>
+<p>我用 Mac 是这么操作的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mac:Hexo jiang$ <span class="built_in">cd</span> blog/<span class="built_in">source</span>/</span><br><span class="line">mac:<span class="built_in">source</span> jiang$ vi CNAME</span><br></pre></td></tr></table></figure></p>
+<p>然后输入我的子域名。保存。</p>
+<p><img src="https://res.cloudinary.com/jiang/image/upload/v1550752781/blog/kqnlgynfhblvj3vi6faw.jpg" alt>  </p>
+<p>命令行里<code>hexo d -g</code> 把修改推送到 Github 上。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d -g</span><br></pre></td></tr></table></figure>
+<p>至此为止该做的都做了，在浏览器输入你的子域名应该能进了。注意 DNS 解析需要花一点时间，没有的话耐心等等。</p>
+<h2 id="给文章加分类和标签"><a href="#给文章加分类和标签" class="headerlink" title="给文章加分类和标签"></a>给文章加分类和标签</h2><p>先说标签。先新建一个标签页面。  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+<p>在博客的 source 下会新增一个 tags 文件夹，打开里面的 index.md 的文档。  </p>
+<p><img src="https://res.cloudinary.com/jiang/image/upload/v1550752782/blog/xwtkecrhpzkdbx7dquop.jpg" alt></p>
+<p>在下面加入 type 跟 layout 两行然后保存就可以了。  </p>
+<pre><code>---
+title: tags
+date: 2019-02-21 17:12:16
+type: &quot;tags&quot;
+layout: &quot;tags&quot;
+---
+</code></pre><p>最后在主题的文件夹下找到 _config.yml 文件后把里面的 tag 一行注释去掉。  </p>
+<p>大功告成。categories 和这个一样只不过把每一步的 tag 换成 categories 罢了，这里不再赘述。</p>
+<h3 id="本地显示，网页上缺不显示"><a href="#本地显示，网页上缺不显示" class="headerlink" title="本地显示，网页上缺不显示"></a>本地显示，网页上缺不显示</h3><p>明明改动或者是文章在本地服务器上测试的时候好好的，Github 服务器上也有，但就是在输入网址后看不到。这种时候下面两种方法都试一遍吧。</p>
+<ol>
+<li>推送到 Github 之前先 <code>hexo clean</code>。</li>
+<li>浏览器 Shift + F5 强制刷新页面。</li>
+</ol>
+</div><div class="tags"><a href="/tags/hexo/">hexo</a><a href="/tags/github-pages/">github pages</a><a href="/tags/blog/">blog</a></div><div class="post-nav"><a class="pre" href="/20190226/foreigner-human-resources-in-japan/">日本的外国人劳动力引入政策</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'0o0agmziFVl9bkSkQHpboB8R-gzGzoHsz',
+  appKey:'DBHJCj1jYtI8HeLxpHbYpDe7',
+  placeholder:'Be the first to comment.',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NHK-新闻评论/">NHK 新闻评论</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a><span class="category-list-count">1</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github-pages/" style="font-size: 15px;">github pages</a> <a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/NHK/" style="font-size: 15px;">NHK</a> <a href="/tags/劳工/" style="font-size: 15px;">劳工</a> <a href="/tags/就职/" style="font-size: 15px;">就职</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/20190226/foreigner-human-resources-in-japan/">日本的外国人劳动力引入政策</a></li><li class="post-list-item"><a class="post-list-link" href="/20190221/deal-with-hexo-problems/">Hexo + Github Pages 踩坑记录</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.jiang.jp/" title="English Blog" target="_blank">English Blog</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">Jiang.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
